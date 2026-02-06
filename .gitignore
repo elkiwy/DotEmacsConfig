@@ -24,6 +24,8 @@ straight/modified-packages.txt
 elpa/
 
 # --- Emacs State/Cache ---
+.emacs.desktop
+.emacs.desktop.lock
 projectile-bookmarks.eld
 recentf
 places
