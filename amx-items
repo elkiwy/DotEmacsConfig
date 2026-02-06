@@ -1,0 +1,19 @@
+
+;; ----- amx-history -----
+(
+ company-mode
+ hs-hide-all
+ hs-minor-mode
+ toggle-truncate-lines
+ cd
+ 5x5
+ amx
+)
+
+;; ----- amx-data -----
+(
+ (toggle-truncate-lines . 1)
+ (hs-minor-mode . 1)
+ (hs-hide-all . 1)
+ (company-mode . 2)
+)

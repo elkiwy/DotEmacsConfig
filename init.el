@@ -67,15 +67,21 @@
   (prefer-coding-system 'utf-8)
   (setq default-process-coding-system '(utf-8-unix . utf-8-unix))
 
+  ;;Improve window title bar
+  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+  (add-to-list 'default-frame-alist '(ns-appearance . light))
+  (setq ns-use-proxy-icon  nil)
+  (setq frame-title-format nil)
+
   ;;Use Space and set tab-width
   (setq-default indent-tabs-mode nil)
   (setq-default tab-width 4)
 
   ;;Set MacOS keybindings
   (when (eq system-type 'darwin)
-            (setq mac-command-modifier 'super)
-            (setq mac-option-modifier 'meta)
-            (setq mac-control-modifier 'control))
+    (setq mac-command-modifier 'super)
+    (setq mac-option-modifier nil)
+    (setq mac-control-modifier nil))
 
   ;;Set Font
   (set-face-attribute 'default nil
@@ -89,6 +95,7 @@
     (display-line-numbers-mode)
     (setq display-line-numbers 'relative))
   (add-hook 'prog-mode-hook #'ab/enable-line-numbers)
+  (add-hook 'prog-mode-hook #'hs-minor-mode)
 
   ;; Enable recent files tracking
   (recentf-mode 1)
@@ -98,7 +105,14 @@
   ;;
   (global-set-key (kbd "<escape>") 'keyboard-escape-quit))
 
-)
+
+
+;;-----------------------------------------------------------------------------
+;; Setup Exec path (for executable binaries like LSPs)
+(use-package exec-path-from-shell
+  :init
+  (exec-path-from-shell-initialize))
+
 
 
 ;;-----------------------------------------------------------------------------
@@ -116,7 +130,7 @@
 ;;-----------------------------------------------------------------------------
 ;; Themes
 (use-package doom-themes
-		:demand
+  :demand
   :ensure t
   :custom
   ;; Global settings (defaults)
@@ -126,6 +140,8 @@
   (doom-themes-treemacs-theme "doom-atom") ; use "doom-colors" for less minimal icon theme
   :config
   (load-theme 'doom-one t)
+  (set-face-attribute 'default nil :background "#1d1e26")
+  (set-face-attribute 'fringe nil :background "#1d1e26")
 
   ;; Enable flashing mode-line on errors
   (doom-themes-visual-bell-config)
@@ -172,8 +188,8 @@
 
   (leader-keys
     "." '(counsel-find-file :which-key "find file")
+    ":" '(counsel-M-x :which-key "execute command")
     "/" '(counsel-projectile-rg :which-key "search project")
-    "x" '(execute-extended-command :which-key "execute command")
     "r" '(restart-emacs :which-key "restart emacs")
     "i" '((lambda () (interactive) (find-file user-init-file)) :which-key "open init file")
 
@@ -197,7 +213,13 @@
     "b" '(:ignore t :which-key "buffer")
     ;; Don't show an error because SPC b ESC is undefined, just abort
     "b <escape>" '(keyboard-escape-quit :which-key t)
-    "bd"  'kill-current-buffer ) )
+    "bd"  'kill-current-buffer
+
+    ;; Hide/Show (Folding)
+    "h" '(:ignore t :which-key "hideshow")
+    "ha" '(hs-hide-all :which-key "hide all")
+    "hh" '(hs-show-all :which-key "show all")
+    "ht" '(hs-toggle-hiding :which-key "toggle folding")) )
 
 
 ;;-----------------------------------------------------------------------------
@@ -240,6 +262,11 @@
   :after (counsel projectile)
   :config
   (counsel-projectile-mode 1))
+
+(use-package amx
+  :demand
+  :config
+  (amx-mode 1))
 
 (setq ivy-use-virtual-buffers t)
 (setq ivy-count-format "(%d/%d) ")
@@ -302,7 +329,6 @@
 ;;-----------------------------------------------------------------------------
 ;; Terminal Emulator
 (use-package vterm)
-
 (use-package vterm-toggle
   :general
   (leader-keys
@@ -310,3 +336,8 @@
 
 
 
+;;-----------------------------------------------------------------------------
+;; LSPs
+(use-package company-mode
+  :init
+  (global-company-mode))
