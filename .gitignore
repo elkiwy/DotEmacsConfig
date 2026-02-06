@@ -1,0 +1,48 @@
+# --- Emacs ---
+# Compiled
+*.elc
+
+# Backup files
+*~
+
+# Auto-save files
+\#*\#
+.#*
+
+# Directory-specific
+auto-save-list/
+.DS_Store
+
+# --- Package Managers ---
+# straight.el
+straight/build/
+straight/repos/
+straight/build-cache.el
+straight/modified-packages.txt
+
+# ELPA/Package.el
+elpa/
+
+# --- Emacs State/Cache ---
+projectile-bookmarks.eld
+recentf
+places
+saveplace
+url/
+transient/
+games/
+eshell/history
+eshell/lastdir
+bookmarks
+ido.last
+ac-comphist.dat
+
+# --- Org Mode ---
+.org-id-locations
+*~.org
+
+# --- Misc ---
+dist/
+node_modules/
+.venv/
+__pycache__/
