@@ -156,7 +156,6 @@
   (load-theme 'doom-one t)
   (set-face-attribute 'default nil :background "#1d1e26")
   (set-face-attribute 'fringe nil :background "#1d1e26")
-
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
 
@@ -378,10 +377,21 @@
 (setq vterm-toggle-scope 'project) ; or 'buffer if you want unique terms per file
 
 
-;;;;-----------------------------------------------------------------------------
+;;-----------------------------------------------------------------------------
 ;; LSPs
 (use-package company-mode)
 (add-hook 'after-init-hook 'global-company-mode)
+
+
+
+
+;;-----------------------------------------------------------------------------
+;; RipGrep Search
+(use-package rg
+  :general
+  (leader-keys
+    "fR" '(rg-menu :which-key "find")))
+
 
 
 
