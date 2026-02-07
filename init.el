@@ -343,7 +343,9 @@
     "g g" '(magit-status :which-key "status")
     "g l" '(magit-log :which-key "log"))
   (general-nmap
-    "<escape>" #'transient-quit-one))
+    "<escape>" #'transient-quit-one)
+  :config
+  (add-hook 'git-commit-setup-hook 'evil-insert-state))
 
 (use-package evil-collection
   :after evil
