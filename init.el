@@ -104,6 +104,13 @@
 
   ;; Disable audible bell
   (setq ring-bell-function 'ignore)
+
+  ;; Compilation and Terminal output at the bottom
+  (setq compilation-scroll-output t)
+  (add-to-list 'display-buffer-alist
+               '("\\*compilation\\*"
+                 (display-buffer-reuse-window display-buffer-at-bottom)
+                 (window-height . 0.3)))
   (global-set-key (kbd "<escape>") 'keyboard-escape-quit))
 
 
@@ -178,6 +185,21 @@
   :demand
   :config
   (general-evil-setup)
+
+  (defun ab/run-project-command ()
+    "Run a command from .emacs_commands in the project root."
+    (interactive)
+    (let* ((root (projectile-project-root))
+           (commands-file (expand-file-name ".emacs_commands" root)))
+      (if (file-exists-p commands-file)
+          (let* ((commands (with-temp-buffer
+                             (insert-file-contents commands-file)
+                             (split-string (buffer-string) "\n" t)))
+                 (command (completing-read "Run command: " commands)))
+            (when (and command (not (string-empty-p command)))
+              (let ((default-directory root))
+                (pop-to-buffer (compile command)))))
+        (message "No .emacs_commands file found in project root (%s)." root))))
 
   (general-create-definer leader-keys
     :states '(normal insert visual emacs)
