@@ -105,6 +105,11 @@
   ;; Disable audible bell
   (setq ring-bell-function 'ignore)
 
+  ;; Scroll Margins
+  (setq scroll-margin 3)             ; Keep a 3-line "buffer" at the top and bottom
+  (setq scroll-conservatively 101)   ; If > 100, Emacs scrolls 1 line instead of jumping to center
+  (setq scroll-step 1)               ; Keyboard scroll step is 1 line
+
   ;; Compilation and Terminal output at the bottom
   (setq compilation-scroll-output t)
   (add-to-list 'display-buffer-alist
