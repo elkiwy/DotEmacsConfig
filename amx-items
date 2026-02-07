@@ -1,13 +1,13 @@
 
 ;; ----- amx-history -----
 (
- company-mode
- hs-hide-all
- hs-minor-mode
- toggle-truncate-lines
- cd
- 5x5
- amx
+ jai-ts-mode
+ load-library
+ python-ts-mode
+ python-mode
+ treesit-install-language-grammar
+ eglot
+ which-key-show-major-mode
 )
 
 ;; ----- amx-data -----
@@ -16,4 +16,19 @@
  (hs-minor-mode . 1)
  (hs-hide-all . 1)
  (company-mode . 2)
+ (php-mode . 2)
+ (eglot . 20)
+ (eglot-manual . 1)
+ (load-library . 5)
+ (eglot-server-menu . 1)
+ (eglot-events-buffer . 1)
+ (jai-mode . 1)
+ (treesit-install-language-grammar . 4)
+ (jai-ts-mode . 28)
+ (package-install . 1)
+ (treesit-check-indent . 1)
+ (treesit-inspect-mode . 1)
+ (which-key-show-major-mode . 1)
+ (python-mode . 1)
+ (python-ts-mode . 1)
 )

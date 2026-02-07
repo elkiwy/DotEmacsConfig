@@ -33,6 +33,7 @@ saveplace
 url/
 transient/
 games/
+eln-cache/
 eshell/history
 eshell/lastdir
 bookmarks

@@ -81,7 +81,7 @@
   (when (eq system-type 'darwin)
     (setq mac-command-modifier 'super)
     (setq mac-option-modifier nil)
-    (setq mac-control-modifier nil))
+    (setq mac-control-modifier 'control))
 
   ;;Set Font
   (set-face-attribute 'default nil
@@ -97,7 +97,7 @@
   (add-hook 'prog-mode-hook #'ab/enable-line-numbers)
   (add-hook 'prog-mode-hook #'hs-minor-mode)
 
-  ;; Enable recent files tracking
+  ;;Enable recent files tracking
   (recentf-mode 1)
   (setq recentf-max-menu-items 250)
   (setq recentf-max-saved-items 250)
@@ -189,7 +189,7 @@
   (leader-keys
     "." '(counsel-find-file :which-key "find file")
     ":" '(counsel-M-x :which-key "execute command")
-    "/" '(counsel-projectile-rg :which-key "search project")
+    ;;"/" '(counsel-projectile-rg :which-key "search project")
     "r" '(restart-emacs :which-key "restart emacs")
     "i" '((lambda () (interactive) (find-file user-init-file)) :which-key "open init file")
 
@@ -198,6 +198,11 @@
     "ff" '(counsel-find-file :which-key "find file")
     "fr" '(counsel-recentf :which-key "recent files")
     "fs" '(save-buffer :which-key "save file")
+
+    ;; Code
+    "c" '(:ignore t :which-key "code")
+    "cd" '(xref-find-definitions :which-key "find definition")
+    "cD" '(xref-find-references :which-key "find references")
 
     ;; Window
     "w" '(:ignore t :which-key "window")
@@ -222,27 +227,28 @@
     "ht" '(hs-toggle-hiding :which-key "toggle folding")) )
 
 
-;;-----------------------------------------------------------------------------
-;; Project Manager
-(use-package projectile
-  :demand
+;;;;-----------------------------------------------------------------------------
+;;;; Project Manager
+;;(use-package projectile
+;;  :demand
+;;
+;;  :general
+;;  (leader-keys
+;;    :states 'normal
+;;    "SPC" '(projectile-find-file :which-key "find file")
+;;
+;;    ;; Buffers
+;;    "b b" '(projectile-switch-to-buffer :which-key "switch buffer")
+;;
+;;    ;; Projects
+;;    "p" '(:ignore t :which-key "projects")
+;;    "p <escape>" '(keyboard-escape-quit :which-key t)
+;;    "p p" '(projectile-switch-project :which-key "switch project")
+;;    "p a" '(projectile-add-known-project :which-key "add project")
+;;    "p r" '(projectile-remove-known-project :which-key "remove project"))
+;;  :init
+;;  (projectile-mode +1))
 
-  :general
-  (leader-keys
-    :states 'normal
-    "SPC" '(projectile-find-file :which-key "find file")
-
-    ;; Buffers
-    "b b" '(projectile-switch-to-buffer :which-key "switch buffer")
-
-    ;; Projects
-    "p" '(:ignore t :which-key "projects")
-    "p <escape>" '(keyboard-escape-quit :which-key t)
-    "p p" '(projectile-switch-project :which-key "switch project")
-    "p a" '(projectile-add-known-project :which-key "add project")
-    "p r" '(projectile-remove-known-project :which-key "remove project"))
-  :init
-  (projectile-mode +1))
 
 
 
@@ -258,10 +264,10 @@
   :config
   (counsel-mode 1))
 
-(use-package counsel-projectile
-  :after (counsel projectile)
-  :config
-  (counsel-projectile-mode 1))
+;;(use-package counsel-projectile
+;;  :after (counsel projectile)
+;;  :config
+;;  (counsel-projectile-mode 1))
 
 (use-package amx
   :demand
@@ -273,28 +279,26 @@
 
 
 
-
-
-;;-----------------------------------------------------------------------------
-;; Session Management (Workspace Restoration)
-(use-package desktop
-  :demand t
-  :init
-  (setq desktop-path (list user-emacs-directory)
-        desktop-auto-save-timeout 30
-        desktop-save t ;; Save without asking on exit
-        desktop-load-locked-desktop t) ;; Open even if locked after a crash
-  :config
-  ;; Enable the mode to save state on exit
-  (desktop-save-mode 1)
-
-  ;; Prompt to restore the last session on startup
-  (add-hook 'after-init-hook
-            (lambda ()
-              (when (file-exists-p (expand-file-name ".emacs.desktop" user-emacs-directory))
-                (if (y-or-n-p "Restore last session? ")
-                    (desktop-read)
-                  (desktop-clear))))))
+;;;;-----------------------------------------------------------------------------
+;;;; Session Management (Workspace Restoration)
+;;(use-package desktop
+;;  :demand t
+;;  :init
+;;  (setq desktop-path (list user-emacs-directory)
+;;        desktop-auto-save-timeout 30
+;;        desktop-save t ;; Save without asking on exit
+;;        desktop-load-locked-desktop t) ;; Open even if locked after a crash
+;;  :config
+;;  ;; Enable the mode to save state on exit
+;;  (desktop-save-mode 1)
+;;
+;;  ;; Prompt to restore the last session on startup
+;;  (add-hook 'after-init-hook
+;;            (lambda ()
+;;              (when (file-exists-p (expand-file-name ".emacs.desktop" user-emacs-directory))
+;;                (if (y-or-n-p "Restore last session? ")
+;;                    (desktop-read)
+;;                  (desktop-clear))))))
 
 
 
@@ -319,8 +323,8 @@
 
 (use-package diff-hl
   :init
-  (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
-  (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
+  ;(add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
+  ;(add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
   :config
   (global-diff-hl-mode))
 
@@ -336,8 +340,13 @@
 
 
 
-;;-----------------------------------------------------------------------------
+;;;;-----------------------------------------------------------------------------
 ;; LSPs
-(use-package company-mode
-  :init
-  (global-company-mode))
+(use-package company-mode)
+(add-hook 'after-init-hook 'global-company-mode)
+
+
+
+;;-----------------------------------------------------------------------------
+;; Language-Specific Configurations
+(load (expand-file-name "languages.el" user-emacs-directory))
