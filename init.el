@@ -360,6 +360,17 @@
   (leader-keys
     "o t" '(vterm-toggle :which-key "terminal")))
 
+(setq display-buffer-alist
+      '(("\\*vterm\\*"
+         (display-buffer-in-side-window)
+         (window-parameters . ((no-delete-other-windows . t)))
+         (side . bottom)
+         (slot . 0)
+         (window-height . 0.3)))) ; Adjust 0.3 to your preferred height (30%)
+
+;; Ensure vterm-toggle knows to use the display-buffer logic
+(setq vterm-toggle-fullscreen-p nil)
+(setq vterm-toggle-scope 'project) ; or 'buffer if you want unique terms per file
 
 
 ;;;;-----------------------------------------------------------------------------
