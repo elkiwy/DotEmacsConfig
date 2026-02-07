@@ -73,7 +73,6 @@
   (setq ns-use-proxy-icon  nil)
   (setq frame-title-format nil)
 
-
   ;;Disable line wrapping by default
   (setq-default truncate-lines t)
   (setq-default truncate-partial-width-windows t)
@@ -94,11 +93,7 @@
     :height 160)
 
   ;;Enable line numbers
-  (defun ab/enable-line-numbers ()
-    "Enable relative line numbers"
-    (interactive)
-    (display-line-numbers-mode)
-    (setq display-line-numbers 'relative))
+  (defun ab/enable-line-numbers () (interactive) (display-line-numbers-mode))
   (add-hook 'prog-mode-hook #'ab/enable-line-numbers)
   (add-hook 'prog-mode-hook #'hs-minor-mode)
 
@@ -107,8 +102,10 @@
   (setq recentf-max-menu-items 250)
   (setq recentf-max-saved-items 250)
 
-  ;;
+  ;; Disable audible bell
+  (setq ring-bell-function 'ignore)
   (global-set-key (kbd "<escape>") 'keyboard-escape-quit))
+
 
 
 
@@ -148,12 +145,6 @@
   (set-face-attribute 'default nil :background "#1d1e26")
   (set-face-attribute 'fringe nil :background "#1d1e26")
 
-  ;; Enable flashing mode-line on errors
-  (doom-themes-visual-bell-config)
-  ;; Enable custom neotree theme (nerd-icons must be installed!)
-  (doom-themes-neotree-config)
-  ;; or for treemacs users
-  (doom-themes-treemacs-config)
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
 
@@ -164,7 +155,10 @@
 (use-package nerd-icons)
 (use-package doom-modeline ;; Customization flags here : https://github.com/seagle0128/doom-modeline 
   :ensure t
-  :init (doom-modeline-mode 1))
+  :init (doom-modeline-mode 1)
+  :config
+  (set-face-attribute 'mode-line nil :background "#15161e")
+  (set-face-attribute 'mode-line-inactive nil :background "#1d1e26"))
 
 
 
@@ -175,7 +169,7 @@
 (use-package which-key
   :demand
   :init
-  (setq which-key-idle-delay 0.5) ; Open after .5s instead of 1s
+  (setq which-key-idle-delay 0.25)
   :config
   (which-key-mode))
 
@@ -194,7 +188,7 @@
   (leader-keys
     "." '(counsel-find-file :which-key "find file")
     ":" '(counsel-M-x :which-key "execute command")
-    ;;"/" '(counsel-projectile-rg :which-key "search project")
+    "/" '(counsel-projectile-rg :which-key "search project")
     "r" '(restart-emacs :which-key "restart emacs")
     "i" '((lambda () (interactive) (find-file user-init-file)) :which-key "open init file")
 
@@ -205,7 +199,8 @@
     "fs" '(save-buffer :which-key "save file")
 
     ;; Code
-    "c" '(:ignore t :which-key "code")
+    "c"  '(:ignore t :which-key "code")
+    "cc" '(ab/run-project-command :which-key "run project command")
     "cd" '(xref-find-definitions :which-key "find definition")
     "cD" '(xref-find-references :which-key "find references")
 
@@ -232,27 +227,27 @@
     "ht" '(hs-toggle-hiding :which-key "toggle folding")) )
 
 
-;;;;-----------------------------------------------------------------------------
-;;;; Project Manager
-;;(use-package projectile
-;;  :demand
-;;
-;;  :general
-;;  (leader-keys
-;;    :states 'normal
-;;    "SPC" '(projectile-find-file :which-key "find file")
-;;
-;;    ;; Buffers
-;;    "b b" '(projectile-switch-to-buffer :which-key "switch buffer")
-;;
-;;    ;; Projects
-;;    "p" '(:ignore t :which-key "projects")
-;;    "p <escape>" '(keyboard-escape-quit :which-key t)
-;;    "p p" '(projectile-switch-project :which-key "switch project")
-;;    "p a" '(projectile-add-known-project :which-key "add project")
-;;    "p r" '(projectile-remove-known-project :which-key "remove project"))
-;;  :init
-;;  (projectile-mode +1))
+;;-----------------------------------------------------------------------------
+;; Project Manager
+(use-package projectile
+  :demand
+
+  :general
+  (leader-keys
+    :states 'normal
+    "SPC" '(projectile-find-file :which-key "find file")
+
+    ;; Buffers
+    "b b" '(projectile-switch-to-buffer :which-key "switch buffer")
+
+    ;; Projects
+    "p" '(:ignore t :which-key "projects")
+    "p <escape>" '(keyboard-escape-quit :which-key t)
+    "p p" '(projectile-switch-project :which-key "switch project")
+    "p a" '(projectile-add-known-project :which-key "add project")
+    "p r" '(projectile-remove-known-project :which-key "remove project"))
+  :init
+  (projectile-mode +1))
 
 
 
@@ -269,10 +264,10 @@
   :config
   (counsel-mode 1))
 
-;;(use-package counsel-projectile
-;;  :after (counsel projectile)
-;;  :config
-;;  (counsel-projectile-mode 1))
+(use-package counsel-projectile
+  :after (counsel projectile)
+  :config
+  (counsel-projectile-mode 1))
 
 (use-package amx
   :demand

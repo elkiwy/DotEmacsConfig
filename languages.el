@@ -1,15 +1,13 @@
 ;;; languages.el --- Language specific configurations -*- lexical-binding: t; -*-
 
-;; 1. Force load the built-in treesit library immediately
-;; This ensures functions like treesit-ready-p exist before anything else runs
+;;This ensures functions like treesit-ready-p exist before anything else runs
 (require 'treesit)
 
-;; 2. Set the grammar source list (done at top-level for safety)
+;;Set the grammar source list 
 (setq treesit-language-source-alist
       '((jai "https://github.com/constantitus/tree-sitter-jai")))
 
-
-;;TODO capisci meglio che cazzo fa sta robba
+;;Automatically handle treesitter major modes when necessary
 (use-package treesit-auto
   :custom
   (treesit-auto-install 'prompt)
@@ -50,12 +48,13 @@
     (add-to-list 'lsp-language-id-configuration '(jai-ts-mode . "jai")))
 
   :config
+  (setq lsp-enable-indentation nil)    ; Stop lsp-mode from managing indentation
+  (setq lsp-enable-on-type-formatting nil) ; Stop formatting as you type
+  (setq lsp-log-io t)
   (lsp-register-client
-   (make-lsp-client :new-connection (lsp-stdio-connection 
-                                     '("/Users/stefanobertoli/Documents/Jails/bin/jails" 
-                                       "-jai_path" "/Users/stefanobertoli/Documents/jai/bin/jai"))
-                    :major-modes '(jai-ts-mode)
-                    :server-id 'jails))
+    (make-lsp-client :new-connection (lsp-stdio-connection '("/Users/stefanobertoli/Documents/Jails/bin/jails" "-jai_path" "/Users/stefanobertoli/Documents/jai/bin/jai"))
+                     :major-modes '(jai-ts-mode)
+                     :server-id 'jails))
   
   ;; Add the hook to your major mode
   :hook (jai-ts-mode . lsp))
@@ -64,16 +63,15 @@
 
 
 
-
 ;;-----------------------------------------------------------------------------
 ;; Jai
+;;NOTE: I had to manually fix Jails code and build a custom executable to fix diagnostics problems
 (setq compilation-error-regexp-alist '()) ;;Workaround to fix missing variables?
 (setq compilation-error-regexp-alist-alist '())
 (use-package jai-ts-mode
   :straight (jai-ts-mode :type git :host github :repo "cpoile/jai-ts-mode")
-  :mode "\\.jai\\'"
-  :hook (jai-ts-mode . eglot-ensure)
-  )
+  :mode "\\.jai\\'")
+
 
 
 
