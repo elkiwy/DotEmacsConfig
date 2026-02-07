@@ -39,6 +39,8 @@ eshell/lastdir
 bookmarks
 ido.last
 ac-comphist.dat
+amx-items
+.lsp-session-v1
 
 # --- Org Mode ---
 .org-id-locations
