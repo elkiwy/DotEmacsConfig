@@ -73,6 +73,11 @@
   (setq ns-use-proxy-icon  nil)
   (setq frame-title-format nil)
 
+
+  ;;Disable line wrapping by default
+  (setq-default truncate-lines t)
+  (setq-default truncate-partial-width-windows t)
+
   ;;Use Space and set tab-width
   (setq-default indent-tabs-mode nil)
   (setq-default tab-width 4)
