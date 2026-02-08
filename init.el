@@ -121,12 +121,26 @@
 
 
 
+
 ;;-----------------------------------------------------------------------------
 ;; Setup Exec path (for executable binaries like LSPs)
 (use-package exec-path-from-shell
   :init
   (exec-path-from-shell-initialize))
 
+
+
+;;-----------------------------------------------------------------------------
+;; Dired
+(use-package dired
+  :straight nil
+  :hook
+  (dired-mode . dired-hide-details-mode) ;;Hide all the extra informations by default, press "(" to toggle back on
+  )
+
+;Instead of deleting files permanently from dired, just move them to trash
+(setq delete-by-moving-to-trash t
+      trash-directory "/Users/stefanobertoli/.Trash/")
 
 
 ;;-----------------------------------------------------------------------------
