@@ -143,6 +143,29 @@
       trash-directory "/Users/stefanobertoli/.Trash/")
 
 
+
+;;-----------------------------------------------------------------------------
+;; Better mini-buffers searches
+
+;; Rich annotations 
+(use-package marginalia 
+  :bind (:map minibuffer-local-map ("M-A" . marginalia-cycle))
+  :init
+  (marginalia-mode))
+
+;; More fuzzy search
+(use-package orderless
+  :ensure t
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-overrides '((file (styles partial-completion))))
+  (completion-pcm-leading-wildcard t)) 
+
+;; Remove "^" by default on 'counsel-M-x'
+(setq ivy-initial-inputs-alist nil)
+
+
+
 ;;-----------------------------------------------------------------------------
 ;; Evil-Mode
 (use-package evil
