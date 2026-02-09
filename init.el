@@ -415,10 +415,14 @@
   :config
   (evil-collection-init))
 
+
 (use-package diff-hl
-  :init
+  :straight t
   :config
-  (global-diff-hl-mode))
+  (add-hook 'after-save-hook 'diff-hl-update)
+  (global-diff-hl-mode 1))
+(global-diff-hl-mode)
+(set-fringe-mode 3)
 
 
 
