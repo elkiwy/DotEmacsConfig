@@ -394,28 +394,6 @@
 
 
 
-;;;;-----------------------------------------------------------------------------
-;;;; Session Management (Workspace Restoration)
-;;(use-package desktop
-;;  :demand t
-;;  :init
-;;  (setq desktop-path (list user-emacs-directory)
-;;        desktop-auto-save-timeout 30
-;;        desktop-save t ;; Save without asking on exit
-;;        desktop-load-locked-desktop t) ;; Open even if locked after a crash
-;;  :config
-;;  ;; Enable the mode to save state on exit
-;;  (desktop-save-mode 1)
-;;
-;;  ;; Prompt to restore the last session on startup
-;;  (add-hook 'after-init-hook
-;;            (lambda ()
-;;              (when (file-exists-p (expand-file-name ".emacs.desktop" user-emacs-directory))
-;;                (if (y-or-n-p "Restore last session? ")
-;;                    (desktop-read)
-;;                  (desktop-clear))))))
-
-
 
 ;;-----------------------------------------------------------------------------
 ;; Git Client
