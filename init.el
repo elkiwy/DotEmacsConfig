@@ -7,6 +7,7 @@
 (setq use-file-dialog nil)
 
 
+
 ;;-----------------------------------------------------------------------------
 ;;Setup Straight.el Package Manager (from the Getting Started)
 (defvar bootstrap-version)
@@ -69,7 +70,9 @@
 
   ;;Improve window title bar
   (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
-  (add-to-list 'default-frame-alist '(ns-appearance . light))
+  (add-to-list 'default-frame-alist '(ns-appearance . dark))
+  (add-to-list 'default-frame-alist '(non-special-display . t))
+  (add-to-list 'default-frame-alist '(fullscreen . maximized))
   (setq ns-use-proxy-icon  nil)
   (setq frame-title-format nil)
 
