@@ -444,7 +444,7 @@
 
 ;; Ensure vterm-toggle knows to use the display-buffer logic
 (setq vterm-toggle-fullscreen-p nil)
-(setq vterm-toggle-scope 'project) ; or 'buffer if you want unique terms per file
+(setq vterm-toggle-scope 'project) 
 
 
 
@@ -468,6 +468,11 @@
 
 
 
+
 ;;-----------------------------------------------------------------------------
 ;; Language-Specific Configurations
 (load (expand-file-name "languages.el" user-emacs-directory))
+
+
+
+
