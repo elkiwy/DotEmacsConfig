@@ -439,12 +439,6 @@
 (setq vterm-toggle-scope 'project) ; or 'buffer if you want unique terms per file
 
 
-;;-----------------------------------------------------------------------------
-;; LSPs
-(use-package company-mode)
-(add-hook 'after-init-hook 'global-company-mode)
-
-
 
 
 ;;-----------------------------------------------------------------------------

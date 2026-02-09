@@ -1,9 +1,15 @@
 ;;; languages.el --- Language specific configurations -*- lexical-binding: t; -*-
 
-;;This ensures functions like treesit-ready-p exist before anything else runs
-(require 'treesit)
 
-;;Set the grammar source list 
+;;-----------------------------------------------------------------------------
+;; LSPs
+(use-package company-mode)
+(add-hook 'after-init-hook 'global-company-mode)
+
+
+;;-----------------------------------------------------------------------------
+;; Treesit
+(require 'treesit)
 (setq treesit-language-source-alist
       '((jai "https://github.com/constantitus/tree-sitter-jai")))
 
