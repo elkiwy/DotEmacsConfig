@@ -112,6 +112,10 @@
   (setq scroll-conservatively 101)   ; If > 100, Emacs scrolls 1 line instead of jumping to center
   (setq scroll-step 1)               ; Keyboard scroll step is 1 line
 
+  ;;Make it resizable to any precise size to avoid gaps
+  (setq frame-resize-pixelwise t)
+  (setq window-resize-pixelwise t)
+
   ;; Compilation and Terminal output at the bottom
   (setq compilation-scroll-output t)
   (add-to-list 'display-buffer-alist
