@@ -234,7 +234,7 @@
   :init (doom-modeline-mode 1)
   :config
   (set-face-attribute 'mode-line nil :background "#15161e")
-  (set-face-attribute 'mode-line-inactive nil :background "#1d1e26"))
+  (set-face-attribute 'mode-line-inactive nil :background "#191A22"))
 
 
 
