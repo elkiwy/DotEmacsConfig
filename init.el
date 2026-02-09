@@ -305,6 +305,12 @@
     "wl" '(evil-window-right :which-key "window right")
     "wd" '(evil-window-delete :which-key "delete window")
 
+    ;; Projects
+    "p" '(:ignore t :which-key "projects")
+    "pp" '(projectile-switch-project :which-key "switch project")
+    "pa" '(projectile-add-known-project :which-key "add project")
+    "pr" '(projectile-remove-known-project :which-key "remove project")
+
     ;; Buffer
     "b" '(:ignore t :which-key "buffer")
     ;; Don't show an error because SPC b ESC is undefined, just abort
@@ -326,21 +332,6 @@
 ;; Project Manager
 (use-package projectile
   :demand
-
-  :general
-  (leader-keys
-    :states 'normal
-    "SPC" '(projectile-find-file :which-key "find file")
-
-    ;; Buffers
-    "b b" '(projectile-switch-to-buffer :which-key "switch buffer")
-
-    ;; Projects
-    "p" '(:ignore t :which-key "projects")
-    "p <escape>" '(keyboard-escape-quit :which-key t)
-    "p p" '(projectile-switch-project :which-key "switch project")
-    "p a" '(projectile-add-known-project :which-key "add project")
-    "p r" '(projectile-remove-known-project :which-key "remove project"))
   :init
   (projectile-mode +1))
 
