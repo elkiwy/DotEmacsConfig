@@ -97,6 +97,7 @@
   (defun ab/enable-line-numbers () (interactive) (display-line-numbers-mode))
   (add-hook 'prog-mode-hook #'ab/enable-line-numbers)
   (add-hook 'prog-mode-hook #'hs-minor-mode)
+  (setq-default display-line-numbers-width 4)
 
   ;;Enable recent files tracking
   (recentf-mode 1)
