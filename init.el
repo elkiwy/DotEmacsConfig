@@ -132,6 +132,8 @@
 
 
 
+
+
 ;;-----------------------------------------------------------------------------
 ;; Font zoom
 (defun my/global-zoom-in ()
@@ -155,6 +157,8 @@
 (global-set-key (kbd "s--") 'my/global-zoom-out)
 (global-set-key (kbd "s-0") 'my/global-zoom-reset)
 
+;;Avoid to rescale the window size when zooming
+(setq frame-inhibit-implied-resize t)
 
 
 
