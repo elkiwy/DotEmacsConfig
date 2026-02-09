@@ -250,6 +250,9 @@
   (set-face-attribute 'mode-line-inactive nil :background "#191A22"))
 
 
+(global-hl-line-mode)
+(set-face-attribute 'hl-line nil :background "#191A22" :extend t)
+
 
 ;;-----------------------------------------------------------------------------
 ;; Keybindings Helper
