@@ -261,7 +261,7 @@
 (use-package which-key
   :demand
   :init
-  (setq which-key-idle-delay 0.25)
+  (setq which-key-idle-delay 0.1)
   :config
   (which-key-mode))
 
