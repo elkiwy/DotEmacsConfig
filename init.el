@@ -116,6 +116,11 @@
   (setq frame-resize-pixelwise t)
   (setq window-resize-pixelwise t)
 
+  ;;Adjust the split divider lines width
+  (setq window-divider-default-bottom-width 4)
+  (setq window-divider-default-right-width 4) 
+  (window-divider-mode 1)
+
   ;; Compilation and Terminal output at the bottom
   (setq compilation-scroll-output t)
   (add-to-list 'display-buffer-alist
