@@ -88,9 +88,7 @@
     (setq mac-control-modifier 'control))
 
   ;;Set Font
-  (set-face-attribute 'default nil
-    :font "Fira Code"
-    :height 160)
+  (set-face-attribute 'default nil :font "Fira Code" :height 120)
 
   ;;Enable line numbers
   (defun ab/enable-line-numbers () (interactive) (display-line-numbers-mode))
@@ -118,6 +116,31 @@
                  (window-height . 0.3)))
   (global-set-key (kbd "<escape>") 'keyboard-escape-quit))
 
+
+
+
+;;-----------------------------------------------------------------------------
+;; Font zoom
+(defun my/global-zoom-in ()
+  "Increase the global font size."
+  (interactive)
+  (let ((old-face-attribute (face-attribute 'default :height)))
+    (set-face-attribute 'default nil :height (+ old-face-attribute 10))))
+
+(defun my/global-zoom-out ()
+  "Decrease the global font size."
+  (interactive)
+  (let ((old-face-attribute (face-attribute 'default :height)))
+    (set-face-attribute 'default nil :height (- old-face-attribute 10))))
+
+(defun my/global-zoom-reset ()
+  "Reset the global font size to default."
+  (interactive)
+  (set-face-attribute 'default nil :height 120))
+
+(global-set-key (kbd "s-=") 'my/global-zoom-in)
+(global-set-key (kbd "s--") 'my/global-zoom-out)
+(global-set-key (kbd "s-0") 'my/global-zoom-reset)
 
 
 
