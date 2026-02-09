@@ -47,6 +47,8 @@
   :config
   (setq lsp-enable-indentation nil)    ; Stop lsp-mode from managing indentation
   (setq lsp-enable-on-type-formatting nil) ; Stop formatting as you type
+  (setq lsp-headerline-breadcrumb-enable nil)
+
   (setq lsp-log-io t)
   (lsp-register-client
     (make-lsp-client :new-connection (lsp-stdio-connection '("/Users/stefanobertoli/Documents/Jails/bin/jails" "-jai_path" "/Users/stefanobertoli/Documents/jai/bin/jai"))
