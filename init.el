@@ -224,14 +224,14 @@
 
 
 ;;-----------------------------------------------------------------------------
-;; Themes
+;; Themes and Modeline
 (use-package doom-themes
   :demand
   :ensure t
   :custom
   ;; Global settings (defaults)
   (doom-themes-enable-bold t)   ; if nil, bold is universally disabled
-  (doom-themes-enable-italic t) ; if nil, italics is universally disabled
+  (doom-themes-enable-italic nil) ; if nil, italics is universally disabled
   ;; for treemacs users
   (doom-themes-treemacs-theme "doom-atom") ; use "doom-colors" for less minimal icon theme
   :config
@@ -241,10 +241,6 @@
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
 
-
-
-;;-----------------------------------------------------------------------------
-;; Modeline
 (use-package nerd-icons)
 (use-package doom-modeline ;; Customization flags here : https://github.com/seagle0128/doom-modeline 
   :ensure t
@@ -355,7 +351,6 @@
     "o"  '(:ignore t :which-key "org/open")
     "of" '(org-cycle :which-key "toggle fold")
     "oa" '(org-global-cycle :which-key "toggle fold all")) )
-
 
 
 
