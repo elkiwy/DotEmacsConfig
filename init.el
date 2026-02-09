@@ -316,6 +316,10 @@
     "ha" '(hs-hide-all :which-key "hide all")
     "hh" '(hs-show-all :which-key "show all")
     "ht" '(hs-toggle-hiding :which-key "toggle folding")) )
+    ;; Rest Client
+    "r" '(:ignore t :which-key "RestClient")
+    "rr" '(restclient-http-send-current :which-key "send request")
+    "rb" '(restclient-http-send-current-raw :which-key "send request (raw)")
 
 
 ;;-----------------------------------------------------------------------------
@@ -459,6 +463,15 @@
   (leader-keys
     "fR" '(rg-menu :which-key "find")))
 
+
+
+;;-----------------------------------------------------------------------------
+;; Rest Client
+(use-package restclient
+  :straight t
+  :mode ("\\.http\\'" . restclient-mode)
+  :config
+  (use-package restclient-jq :straight t))
 
 
 
