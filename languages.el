@@ -37,15 +37,6 @@
 
 ;;-----------------------------------------------------------------------------
 ;; LSP (Eglot)
-;(use-package eglot
-;  :defer t
-;  :custom
-;  :config
-;  (add-to-list
-;   'eglot-server-programs
-;   '(jai-ts-mode . ("/Users/stefanobertoli/Documents/Jails/bin/jails" "-jai_path" "/Users/stefanobertoli/Documents/jai/bin/jai"))))
-
-
 (use-package lsp-mode
   :commands lsp
 
@@ -88,18 +79,50 @@
 ;;-----------------------------------------------------------------------------
 ;; PHP Support
 (use-package php-mode
-  :mode "\\.php\\'"
-  :hook (php-mode . eglot-ensure))
+  :mode "\\.php\\'")
+
+
+
+
+;;-----------------------------------------------------------------------------
+;; GLSL Support
+(use-package glsl-mode
+  :mode "\\.hlsl\\'")
 
 
 
 
 
 
+;;-----------------------------------------------------------------------------
+;; Org Mode
+(use-package org
+  :hook (org-mode . org-indent-mode)
+  :config
+  (setq org-hide-leading-stars t) ; Hides all but one star for a cleaner look
+  (setq org-adapt-indentation nil)) ; Ensures Org doesn't add real spaces
 
 
+(use-package evil-org
+  :straight t
+  :after org
+  :hook (org-mode . evil-org-mode)
+  :config
+  ;; This ensures >> and << work for headings and lists
+  (require 'evil-org-agenda)
+  (evil-org-set-key-theme '(navigation insert shift todo heading))
+  
+  ;; Custom re-binds for your specific preference
+  (general-define-key
+   :states 'normal
+   :keymaps 'org-mode-map
+   ">>" 'org-metaright
+   "<<" 'org-metaleft))
 
-
+;; Table of contents in Org Mode
+(use-package toc-org
+  :straight t
+  :hook (org-mode . toc-org-mode))
 
 
 (provide 'languages)

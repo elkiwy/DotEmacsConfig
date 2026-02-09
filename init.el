@@ -280,14 +280,19 @@
     "." '(counsel-find-file :which-key "find file")
     ":" '(counsel-M-x :which-key "execute command")
     "/" '(counsel-projectile-rg :which-key "search project")
-    "r" '(restart-emacs :which-key "restart emacs")
+    "R" '(restart-emacs :which-key "restart emacs")
     "i" '((lambda () (interactive) (find-file user-init-file)) :which-key "open init file")
+    "SPC" '(projectile-find-file :which-key "find file")
 
     ;; File
     "f" '(:ignore t :which-key "file")
     "ff" '(counsel-find-file :which-key "find file")
     "fr" '(counsel-recentf :which-key "recent files")
     "fs" '(save-buffer :which-key "save file")
+
+    ;; Eval / EmacsLisp
+    "e"  '(:ignore t :which-key "ELisp")
+    "ee" '(eval-last-sexp :which-key "run project command")
 
     ;; Code
     "c"  '(:ignore t :which-key "code")
@@ -313,19 +318,28 @@
 
     ;; Buffer
     "b" '(:ignore t :which-key "buffer")
-    ;; Don't show an error because SPC b ESC is undefined, just abort
-    "b <escape>" '(keyboard-escape-quit :which-key t)
-    "bd"  'kill-current-buffer
+    "bb" '(projectile-switch-to-buffer :which-key "switch buffer")
+    "bm" 'buffer-menu
+    "bd" 'kill-current-buffer
 
     ;; Hide/Show (Folding)
     "h" '(:ignore t :which-key "hideshow")
     "ha" '(hs-hide-all :which-key "hide all")
+    "hl" '(hs-hide-level :which-key "hide level")
     "hh" '(hs-show-all :which-key "show all")
-    "ht" '(hs-toggle-hiding :which-key "toggle folding")) )
+    "ht" '(hs-toggle-hiding :which-key "toggle folding")
+
     ;; Rest Client
     "r" '(:ignore t :which-key "RestClient")
     "rr" '(restclient-http-send-current :which-key "send request")
     "rb" '(restclient-http-send-current-raw :which-key "send request (raw)")
+
+    ;; Org Mode
+    "o"  '(:ignore t :which-key "org/open")
+    "of" '(org-cycle :which-key "toggle fold")
+    "oa" '(org-global-cycle :which-key "toggle fold all")) )
+
+
 
 
 ;;-----------------------------------------------------------------------------
@@ -408,11 +422,8 @@
   :config
   (evil-collection-init))
 
-
 (use-package diff-hl
   :init
-  ;(add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
-  ;(add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
   :config
   (global-diff-hl-mode))
 
