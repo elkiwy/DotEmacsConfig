@@ -215,6 +215,7 @@
   (setq evil-ex-search-persistent-highlight t)
   (setq evil-want-keybinding nil)
   (setq evil-want-C-u-scroll t)
+  (setq evil-symbol-word-search t)
   :config
   (evil-mode 1)
   (evil-select-search-module 'evil-search-module 'evil-search))
