@@ -1,0 +1,22 @@
+
+* Game Development Tasks
+** Features
+*** TODO [#A] Better big enemy healthbar and stats                   :hard:
+*** TODO [#B] Visual effects when you accept a quest               :medium:
+*** WAITING [#C] Dust wind particles                                 :easy:
+*** DONE [#C] Icons for bullet types on weapons                    :medium:
+*** TODO [#B] Item border color based on rarity in inventory :medium:
+
+** Content
+*** TODO [#B] NEW Exploding barrels like NT :medium:
+*** TODO [#A] EnemySkill - Sporelord bullet :hard:
+*** TODO [#B] EnemySkill - Snake Spit :medium:
+*** IN-PROGRESS [#A] Implement all the skill tree nodes effects :hard:
+
+** Bugs
+*** TODO [#A] Fix drawing depths between bear and props :medium:
+*** WAITING [#C] Item comparison logic discussion :medium:
+
+** Technical
+*** TODO [#C] Add culling of sprites out of the camera view :hard:
+*** TODO [#A] Try make GI work on the full scene :hard:

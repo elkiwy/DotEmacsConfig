@@ -360,9 +360,14 @@
     "rb" '(restclient-http-send-current-raw :which-key "send request (raw)")
 
     ;; Org Mode
-    "o"  '(:ignore t :which-key "org/open")
+    "o"  '(:ignore t :which-key "org")
     "of" '(org-cycle :which-key "toggle fold")
-    "oa" '(org-global-cycle :which-key "toggle fold all")) )
+    "oa" '(org-global-cycle :which-key "toggle fold all")
+    "ot" '(org-set-tags-command :which-key "set tags")
+    "os" '(org-schedule :which-key "schedule")
+    "od" '(my/org-insert-daily-header :which-key "insert current date")
+    "oR" '(org-reload :which-key "Reload Org")
+    ))
 
 
 
@@ -479,3 +484,18 @@
 
 
 
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(safe-local-variable-values
+   '((eval my/highlight-current-date)
+     (eval add-hook 'before-save-hook 'my/highlight-current-date nil t)
+     (eval add-hook 'before-save-hook my/highlight-current-date nil t))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

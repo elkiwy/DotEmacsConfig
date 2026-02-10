@@ -102,7 +102,45 @@
   :hook (org-mode . org-indent-mode)
   :config
   (setq org-hide-leading-stars t) ; Hides all but one star for a cleaner look
-  (setq org-adapt-indentation nil)) ; Ensures Org doesn't add real spaces
+  (setq org-adapt-indentation nil) ; Ensures Org doesn't add real spaces
+
+  ;; Todo Keywords
+  (setq org-todo-keywords
+        '((sequence "TODO(t)" "IN-PROGRESS(p)" "|" "DONE(d)" )))
+
+  ;; Tags
+  (setq org-tag-alist
+        '(
+          (:startgroup) ("easy" . ?e) ("medium" . ?m) ("hard" . ?h) (:endgroup)
+          ("beardedbear" . ?b) ("casa" . ?c) ("work" . ?w) ("other" . ?o) 
+         ))
+  (setq org-tag-faces
+        '(("easy"         . (:foreground "#98be65" :weight bold))
+          ("medium"       . (:foreground "#ECBE7B" :weight bold))
+          ("hard"         . (:foreground "#ff6c6b" :weight bold))
+          ("beardedbear"  . (:foreground "#da8548" :weight bold))
+          ("casa"         . (:foreground "#4db5bd" :weight bold))
+          ("work"         . (:foreground "#ECBE7B" :weight bold))
+          ("other"        . (:foreground "#9ca0a4" :weight bold))
+          ))
+
+
+  ;; Colors (Faces)
+  (setq org-todo-keyword-faces
+        '(("TODO"        . (:foreground "#f0b0b0" :weight bold))
+          ("IN-PROGRESS" . (:foreground "#51afef" :weight bold))
+          ("DONE"        . (:foreground "#5D8D53" :weight bold))
+          ))
+
+  ;; Dates
+  (set-face-attribute 'org-date nil :foreground "#c698dd" :underline nil :weight 'normal)
+  (set-face-attribute 'org-date nil :foreground "#c0c0c0" :underline nil :weight 'normal)
+
+  ;; Priorities
+  (setq org-priority-faces
+        '((?A . (:foreground "#ff6c6b" :weight bold))
+          (?B . (:foreground "#ECBE7B" :weight bold))
+          (?C . (:foreground "#73797e" :weight bold)))))
 
 
 (use-package evil-org
@@ -125,6 +163,41 @@
 (use-package toc-org
   :straight t
   :hook (org-mode . toc-org-mode))
+
+
+
+
+(defun my/org-insert-daily-header ()
+  "Insert a 2nd level Org header with a shiftable date."
+  (interactive)
+  (insert "** ")
+  (org-insert-time-stamp (current-time) nil t)
+  (insert "\n"))
+
+
+
+
+
+(defun my/highlight-current-date ()
+  (interactive)
+  (highlight-phrase (format-time-string "\\[.* Sat\\]" (current-time)) 'nerd-icons-lred)
+  (highlight-phrase (format-time-string "\\[.* Sun\\]" (current-time)) 'nerd-icons-lred)
+  (highlight-phrase (format-time-string "\\[%Y-%m-%d %a\\]" (current-time)) 'magit-branch-remote-head)
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 (provide 'languages)
