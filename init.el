@@ -308,6 +308,7 @@
     "ff" '(counsel-find-file :which-key "find file")
     "fr" '(counsel-recentf :which-key "recent files")
     "fs" '(save-buffer :which-key "save file")
+    "fR" '(rg-menu :which-key "find")
 
     ;; Eval / EmacsLisp
     "e"  '(:ignore t :which-key "ELisp")
@@ -456,10 +457,7 @@
 
 ;;-----------------------------------------------------------------------------
 ;; RipGrep Search
-(use-package rg
-  :general
-  (leader-keys
-    "fR" '(rg-menu :which-key "find")))
+(use-package rg)
 
 
 
