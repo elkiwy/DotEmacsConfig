@@ -329,6 +329,11 @@
     "wl" '(evil-window-right :which-key "window right")
     "wd" '(evil-window-delete :which-key "delete window")
 
+    ;; Toggles
+    "t" '(:ignore t :which-key "toggles")
+    "tt" '(vterm-toggle :which-key "terminal")
+    "tl" '(toggle-truncate-lines :which-key "truncate lines")
+
     ;; Projects
     "p" '(:ignore t :which-key "projects")
     "pp" '(projectile-switch-project :which-key "switch project")
@@ -432,18 +437,15 @@
 ;;-----------------------------------------------------------------------------
 ;; Terminal Emulator
 (use-package vterm)
-(use-package vterm-toggle
-  :general
-  (leader-keys
-    "o t" '(vterm-toggle :which-key "terminal")))
+(use-package vterm-toggle)
 
-(setq display-buffer-alist
-      '(("\\*vterm\\*"
+(add-to-list 'display-buffer-alist
+      '("\\*vterm\\*"
          (display-buffer-in-side-window)
          (window-parameters . ((no-delete-other-windows . t)))
          (side . bottom)
          (slot . 0)
-         (window-height . 0.3)))) ; Adjust 0.3 to your preferred height (30%)
+         (window-height . 0.3))) ; Adjust 0.3 to your preferred height (30%)
 
 ;; Ensure vterm-toggle knows to use the display-buffer logic
 (setq vterm-toggle-fullscreen-p nil)
