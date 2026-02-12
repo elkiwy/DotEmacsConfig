@@ -137,10 +137,9 @@
      ("t" "Task" plain
       "%?"
       :if-new (file+head "tasks/%<%Y%m%d%H%M%S>-${slug}.org" 
-                         "#+title: ${title}\n#+filetags: :task:\n\n[[id:E3FC5D5A-1F4F-4022-AEB2-A88F7E68D90E][Back to SBS Project]]\n")
+                         "#+title: ${title}\n#+filetags: :task:\n\n%(my/org-roam-project-link-string)\n")
       :unnarrowed t
-      ;;:immediate-finish t
-      :after-finalize my/org-roam-link-task-to-sbs)
+      :after-finalize my/org-roam-link-task-to-project)
 
      )
     )
@@ -158,14 +157,25 @@
 
 
 (setq my/org-roam-project-list
-      '(("Personal" . "D276618E-9375-474C-931D-CEF53987C9AF")
+      '(
+        ("Personal" . "D276618E-9375-474C-931D-CEF53987C9AF")
         ("SBS"      . "E3FC5D5A-1F4F-4022-AEB2-A88F7E68D90E")
-        ("Fastskin" . "F4964FF2-6F4F-4AD0-B430-E400D5154083")))
+        ))
 
 
 
-(defun my/org-roam-link-task-to-sbs ()
-  "Hardcoded link for SBS project with verbose debugging."
+(defvar my/org-roam-last-project-id nil
+  "Stores the ID of the last selected project during capture.")
+
+(defun my/org-roam-project-link-string ()
+  "Prompt for a project and return a link string. Stores choice for the linking hook."
+  (let* ((project-name (completing-read "Link to Project: " my/org-roam-project-list))
+         (project-id (alist-get project-name my/org-roam-project-list nil nil 'equal)))
+    (setq my/org-roam-last-project-id project-id)
+    (format "[[id:%s][Back to %s Project]]" project-id project-name)))
+
+(defun my/org-roam-link-task-to-project ()
+  "Append the link to the task into the selected project note's 'Tasks' section."
   (let (task-title task-id)
     ;; Switch to the captured note's buffer to get its data
     (with-current-buffer (marker-buffer org-capture-last-stored-marker)
@@ -176,32 +186,23 @@
         ;; Get ID from the first property drawer in the file
         (setq task-id (org-id-get (point-min) t))))
 
-    (let* ((sbs-id "E3FC5D5A-1F4F-4022-AEB2-A88F7E68D90E")
-           (project-location (org-id-find sbs-id t)))
-
+    (let* ((project-location (org-id-find my/org-roam-last-project-id t)))
 
     (if (and task-id project-location)
         (progn
           (with-current-buffer (marker-buffer project-location)
-            (message "DEBUG: Inside SBS Project Buffer: %s" (buffer-name))
             (save-excursion
               (goto-char (point-min))
               ;; Search for * Tasks header
               (if (re-search-forward "^\\* Tasks" nil t)
-                  (progn
-                    (message "DEBUG: Found '* Tasks' header")
-                    (org-end-of-subtree t t))
-                (progn
-                  (message "DEBUG: '* Tasks' header NOT found, jumping to end of file")
-                  (goto-char (point-max))))
+                  (org-end-of-subtree t t)
+                (goto-char (point-max)))
               
               ;; Ensure newline and insert link
               (unless (bolp) (insert "\n"))
               (insert (format "** TODO [[id:%s][%s]]\n" task-id task-title))
-              (message "DEBUG: Inserted link: ** TODO [[id:%s][%s]]" task-id task-title)
               (save-buffer)
-              (message "DEBUG: Buffer saved successfully")))
-          (message "SUCCESS: Task link added to SBS."))
-      (message "ERROR: Missing Task ID (Check if your template creates one) or Project File not found!")))))
+              (message "SUCCESS: Task link added to project."))))
+      (message "ERROR: Missing Task ID or Project File not found!")))))
 
 (provide 'org)
