@@ -368,6 +368,12 @@
     "os" '(org-schedule :which-key "schedule")
     "od" '(my/org-insert-daily-header :which-key "insert current date")
     "oR" '(org-reload :which-key "Reload Org")
+
+    ;; Org Roam Mode
+    "or"  '(:ignore t :which-key "org roam")
+    "orf"  '(org-roam-node-find :which-key "node find")
+    "ori"  '(org-roam-node-insert :which-key "node insert")
+
     ))
 
 
@@ -501,6 +507,7 @@
 ;;-----------------------------------------------------------------------------
 ;; Language-Specific Configurations
 (load (expand-file-name "languages.el" user-emacs-directory))
+(load (expand-file-name "org.el" user-emacs-directory))
 
 
 
