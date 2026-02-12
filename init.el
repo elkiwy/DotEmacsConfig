@@ -108,7 +108,7 @@
   (setq ring-bell-function 'ignore)
 
   ;; Scroll Margins
-  (setq scroll-margin 3)             ; Keep a 3-line "buffer" at the top and bottom
+  (setq scroll-margin 5)             ; Keep a 3-line "buffer" at the top and bottom
   (setq scroll-conservatively 101)   ; If > 100, Emacs scrolls 1 line instead of jumping to center
   (setq scroll-step 1)               ; Keyboard scroll step is 1 line
 
@@ -128,6 +128,7 @@
                  (display-buffer-reuse-window display-buffer-at-bottom)
                  (window-height . 0.3)))
   (global-set-key (kbd "<escape>") 'keyboard-escape-quit))
+
 
 
 
@@ -312,7 +313,7 @@
 
     ;; Eval / EmacsLisp
     "e"  '(:ignore t :which-key "ELisp")
-    "ee" '(eval-last-sexp :which-key "run project command")
+    "ee" '(eval-last-sexp :which-key "Evaluate last sexp")
 
     ;; Code
     "c"  '(:ignore t :which-key "code")
@@ -362,12 +363,32 @@
     ;; Org Mode
     "o"  '(:ignore t :which-key "org")
     "of" '(org-cycle :which-key "toggle fold")
-    "oa" '(org-global-cycle :which-key "toggle fold all")
+    "oa" '(org-agenda :which-key "agenda")
     "ot" '(org-set-tags-command :which-key "set tags")
     "os" '(org-schedule :which-key "schedule")
     "od" '(my/org-insert-daily-header :which-key "insert current date")
     "oR" '(org-reload :which-key "Reload Org")
     ))
+
+
+
+;;-----------------------------------------------------------------------------
+;; Smooth scrolling
+(use-package good-scroll)
+(good-scroll-mode 1)
+(pixel-scroll-precision-mode 1)
+
+(defun my/evil-scroll-down-smooth ()
+  (interactive)
+  (good-scroll-move (* -1 (/ (window-pixel-height) 2))))
+
+(defun my/evil-scroll-up-smooth ()
+  (interactive)
+  (good-scroll-move (/ (window-pixel-height) 2)))
+
+(general-def 'motion
+  "C-d" 'my/evil-scroll-up-smooth
+  "C-u" 'my/evil-scroll-down-smooth)
 
 
 
