@@ -229,6 +229,8 @@
 
 
 
+
+
 ;;-----------------------------------------------------------------------------
 ;; Themes and Modeline
 (use-package doom-themes
@@ -294,6 +296,7 @@
                 (pop-to-buffer (compile command)))))
         (message "No .emacs_commands file found in project root (%s)." root))))
 
+
   (general-create-definer leader-keys
     :states '(normal insert visual emacs)
     :keymaps 'override
@@ -324,6 +327,10 @@
     "cc" '(ab/run-project-command :which-key "run project command")
     "cd" '(xref-find-definitions :which-key "find definition")
     "cD" '(xref-find-references :which-key "find references")
+
+    ;; Dumb Jump
+    "d" '(:ignore t :which-key "dumb jump")
+    "db" '(xref-pop-marker-stack :which-key "jump back")
 
     ;; Window
     "w" '(:ignore t :which-key "window")
@@ -494,6 +501,12 @@
 ;;-----------------------------------------------------------------------------
 ;; RipGrep Search
 (use-package rg)
+
+;;-----------------------------------------------------------------------------
+;; Dumb Jump
+(use-package dumb-jump
+  :config
+  (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
 
 
 
