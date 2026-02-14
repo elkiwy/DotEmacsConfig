@@ -465,7 +465,12 @@
   :after evil
   :demand
   :config
-  (evil-collection-init))
+  (evil-collection-init)
+  (with-eval-after-load 'compile
+    (general-define-key
+     :keymaps 'compilation-mode-map
+     :states '(motion normal)
+     "<escape>" 'quit-window)))
 
 
 (use-package diff-hl
@@ -515,8 +520,37 @@
 (use-package restclient
   :straight t
   :mode ("\\.http\\'" . restclient-mode)
+
   :config
   (use-package restclient-jq :straight t))
+
+
+
+;;-----------------------------------------------------------------------------
+;; Custom Folding Overlay (Fix for cuddled else)
+(defun ab/hs-setup-overlay (ov)
+  (let ((display-string "...")
+        (end (overlay-end ov)))
+    ;; Set the display text and style
+    (overlay-put ov 'display display-string)
+    (overlay-put ov 'face 'font-lock-comment-face)
+    
+    ;; Check context to see if we need a forced newline
+    (save-excursion
+      (goto-char end)
+      (skip-chars-forward " \t") ;; Skip whitespace to find the closing brace
+      (when (looking-at "}")      ;; Check if we are at '}'
+        (forward-char 1)          ;; Jump over '}'
+        
+        ;; If there is code immediately after '}' (like 'else'), add a newline to the folded display
+        ;; This prevents "} else" from appearing on the same line as the fold.
+        (unless (looking-at "[ \t]*$")
+           (let ((indentation (save-excursion
+                               (goto-char (overlay-start ov))
+                               (current-indentation))))
+             (overlay-put ov 'display (concat display-string "\n" (make-string indentation ?\s)))))))))
+
+(setq-default hs-set-up-overlay 'ab/hs-setup-overlay)
 
 
 
