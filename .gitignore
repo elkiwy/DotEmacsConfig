@@ -41,6 +41,7 @@ ido.last
 ac-comphist.dat
 amx-items
 .lsp-session-v1
+org-roam.db
 
 # --- Org Mode ---
 .org-id-locations

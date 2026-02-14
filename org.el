@@ -127,17 +127,10 @@
                          "#+title: ${title}\n#+filetags: beardedbear\n#+date: %U\n")
       :unnarrowed t)
 
-     ;;("t" "Task" plain "%?"
-     ;; :if-new (file+head "tasks/%<%Y%m%d%H%M%S>-${slug}.org" 
-     ;;                    "#+title: ${title}\n#+filetags: :task:\n\n[[id:%(alist-get (completing-read \"Project: \" my/org-roam-project-list) my/org-roam-project-list nil nil 'equal)][Back to Project]]\n")
-     ;; :immediate-finish t
-     ;; :after-finalize my/org-roam-link-task-to-sbs)
-     ;; ;;:after-finalize my/org-roam-link-task-to-project)
-
      ("t" "Task" plain
       "%?"
       :if-new (file+head "tasks/%<%Y%m%d%H%M%S>-${slug}.org" 
-                         "#+title: ${title}\n#+filetags: :task:\n\n%(my/org-roam-project-link-string)\n")
+                         "#+title: ${title}\n#+filetags: :task:\n%(my/org-roam-project-link-string)\n\n")
       :unnarrowed t
       :after-finalize my/org-roam-link-task-to-project)
 
