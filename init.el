@@ -215,6 +215,7 @@
 (use-package evil
   :demand ; No lazy loading
   :init
+  (setq evil-undo-system 'undo-redo)
   (setq evil-ex-search-highlight-all t)
   (setq evil-ex-search-persistent-highlight t)
   (setq evil-want-keybinding nil)
