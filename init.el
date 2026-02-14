@@ -389,23 +389,23 @@
 
 
 
-;;-----------------------------------------------------------------------------
-;; Smooth scrolling
-(use-package good-scroll)
-(good-scroll-mode 1)
-(pixel-scroll-precision-mode 1)
-
-(defun my/evil-scroll-down-smooth ()
-  (interactive)
-  (good-scroll-move (* -1 (/ (window-pixel-height) 2))))
-
-(defun my/evil-scroll-up-smooth ()
-  (interactive)
-  (good-scroll-move (/ (window-pixel-height) 2)))
-
-(general-def 'motion
-  "C-d" 'my/evil-scroll-up-smooth
-  "C-u" 'my/evil-scroll-down-smooth)
+;;;;-----------------------------------------------------------------------------
+;;;; Smooth scrolling
+;;(use-package good-scroll)
+;;(good-scroll-mode 1)
+;;(pixel-scroll-precision-mode 1)
+;;
+;;(defun my/evil-scroll-down-smooth ()
+;;  (interactive)
+;;  (good-scroll-move (* -1 (/ (window-pixel-height) 2))))
+;;
+;;(defun my/evil-scroll-up-smooth ()
+;;  (interactive)
+;;  (good-scroll-move (/ (window-pixel-height) 2)))
+;;
+;;(general-def 'motion
+;;  "C-d" 'my/evil-scroll-up-smooth
+;;  "C-u" 'my/evil-scroll-down-smooth)
 
 
 
