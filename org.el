@@ -155,6 +155,8 @@
 
 
 
+(setq org-startup-folded t)
+
 
 (setq my/org-roam-project-list
       '(
