@@ -93,6 +93,9 @@
   ;;Set Font
   (set-face-attribute 'default nil :font "Fira Code" :height 120)
 
+  ;;Move file backups into a dedicated folder so they do not clutter the workspaces
+  (setq backup-directory-alist `(("." . "~/.emacs.d/backups")))
+
   ;;Enable line numbers
   (defun ab/enable-line-numbers () (interactive) (display-line-numbers-mode))
   (add-hook 'prog-mode-hook #'ab/enable-line-numbers)
