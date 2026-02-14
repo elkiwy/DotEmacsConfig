@@ -325,7 +325,9 @@
     ;; Code
     "c"  '(:ignore t :which-key "code")
     "cc" '(ab/run-project-command :which-key "run project command")
-    "cd" '(xref-find-definitions :which-key "find definition")
+    ;"cd" '(xref-find-definitions :which-key "find definition")
+    "cd" '(my/xref-find-definitions-with-fallback :which-key "find definition (smart)")
+
     "cD" '(xref-find-references :which-key "find references")
 
     ;; Dumb Jump
@@ -512,6 +514,24 @@
 (use-package dumb-jump
   :config
   (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
+
+
+(defun my/xref-find-definitions-with-fallback ()
+  "Attempt to jump to definition. If not found, fall back to project-wide search."
+  (interactive)
+  (condition-case nil
+    ;;Jump to definition with dumpjump
+    (xref-find-definitions (xref-backend-identifier-at-point (xref-find-backend)))
+    ;;Fallback on searching the thing-at-point with 'counsel-projectile-ripgrep'
+    (error
+     (let ((ident (thing-at-point 'symbol t)))
+       (when (or (null ident) (string-empty-p ident))
+         (setq ident (read-string "Search for: ")))
+       (setq ident (substring-no-properties ident))
+       (message "Definition not found, searching project for '%s'..." ident)
+       (let ((counsel-projectile-rg-initial-input ident))
+         (counsel-projectile-rg))))))
+
 
 
 
