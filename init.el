@@ -84,6 +84,9 @@
   (setq-default indent-tabs-mode nil)
   (setq-default tab-width 4)
 
+  ;;Enable electric-pair-mode for auto-closing brackets
+  (electric-pair-mode 1)
+
   ;;Set MacOS keybindings
   (when (eq system-type 'darwin)
     (setq mac-command-modifier 'super)
@@ -130,6 +133,10 @@
                '("\\*compilation\\*"
                  (display-buffer-reuse-window display-buffer-at-bottom)
                  (window-height . 0.3)))
+
+  ;;Enable ANSI colors in compilation output
+  (require 'ansi-color)
+  (add-hook 'compilation-filter-hook 'ansi-color-compilation-filter)
   (global-set-key (kbd "<escape>") 'keyboard-escape-quit))
 
 
@@ -259,6 +266,7 @@
 
 
 (use-package rainbow-mode)
+(use-package golden-ratio)
 
 (global-hl-line-mode)
 (set-face-attribute 'hl-line nil :background "#191A22" :extend t)
