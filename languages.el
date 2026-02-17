@@ -11,7 +11,10 @@
 ;; Treesit
 (require 'treesit)
 (setq treesit-language-source-alist
-      '((jai "https://github.com/constantitus/tree-sitter-jai")))
+      '(
+        (jai "https://github.com/constantitus/tree-sitter-jai")
+        (odin "https://github.com/tree-sitter-grammars/tree-sitter-odin")
+        ))
 
 ;;Automatically handle treesitter major modes when necessary
 (use-package treesit-auto
@@ -70,6 +73,15 @@
 (use-package jai-ts-mode
   :straight (jai-ts-mode :type git :host github :repo "cpoile/jai-ts-mode")
   :mode "\\.jai\\'")
+
+
+
+
+;;-----------------------------------------------------------------------------
+;; Odin
+(use-package odin-ts-mode
+  :straight (odin-ts-mode :type git :host github :repo "Sampie159/odin-ts-mode")
+  :mode "\\.odin\\'")
 
 
 
