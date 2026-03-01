@@ -44,7 +44,7 @@
   (setq org-priority-faces
         '((?A . (:foreground "#ff6c6b" :weight bold))
           (?B . (:foreground "#ECBE7B" :weight bold))
-          (?C . (:foreground "#73797e" :weight bold)))))
+          (?C . (:foreground "#BCCE8B" :weight bold)))))
 
 
 (use-package evil-org

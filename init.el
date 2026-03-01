@@ -251,8 +251,10 @@
   (doom-themes-treemacs-theme "doom-atom") ; use "doom-colors" for less minimal icon theme
   :config
   (load-theme 'doom-one t)
-  (set-face-attribute 'default nil :background "#1d1e26")
-  (set-face-attribute 'fringe nil :background "#1d1e26")
+  (set-face-attribute 'default nil :background "#15161e")
+  (set-face-attribute 'fringe nil :background "#15161e")
+  (set-face-foreground 'window-divider "#12131b")
+  (set-face-background 'window-divider "#12131b")
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
 
@@ -261,7 +263,7 @@
   :ensure t
   :init (doom-modeline-mode 1)
   :config
-  (set-face-attribute 'mode-line nil :background "#15161e")
+  (set-face-attribute 'mode-line nil :background "#12131b")
   (set-face-attribute 'mode-line-inactive nil :background "#191A22"))
 
 
@@ -333,10 +335,10 @@
     ;; Code
     "c"  '(:ignore t :which-key "code")
     "cc" '(ab/run-project-command :which-key "run project command")
-    ;"cd" '(xref-find-definitions :which-key "find definition")
+    "cs" '(my/counsel-projectile-rg-at-point :which-key "search project at point")
+    "cj" '(my/json-format :which-key "format json")
     "cd" '(my/xref-find-definitions-with-fallback :which-key "find definition (smart)")
-
-    "cD" '(xref-find-references :which-key "find references")
+    "cD" '(my/xref-find-references-with-fallback :which-key "find references (smart)")
 
     ;; Dumb Jump
     "d" '(:ignore t :which-key "dumb jump")
@@ -351,6 +353,13 @@
     "wk" '(evil-window-up :which-key "window up")
     "wl" '(evil-window-right :which-key "window right")
     "wd" '(evil-window-delete :which-key "delete window")
+
+    ;; Artist
+    "a" '(:ignore t :which-key "artist-mode")
+    "aa" '(artist-mode :which-key "toggle artist-mode")
+    "ar" '(artist-select-op-rectangle :which-key "rectangle tool")
+    "al" '(artist-select-op-line :which-key "lines tool")
+    "as" '(artist-select-op-spray-can :which-key "spray tool")
 
     ;; Toggles
     "t" '(:ignore t :which-key "toggles")
@@ -385,7 +394,7 @@
     "o"  '(:ignore t :which-key "org")
     "of" '(org-cycle :which-key "toggle fold")
     "oa" '(org-agenda :which-key "agenda")
-    "ot" '(org-set-tags-command :which-key "set tags")
+    ;"ot" '(org-set-tags-command :which-key "set tags")
     "os" '(org-schedule :which-key "schedule")
     "od" '(my/org-insert-daily-header :which-key "insert current date")
     "oR" '(org-reload :which-key "Reload Org")
@@ -469,6 +478,7 @@
   (general-nmap
     "<escape>" #'transient-quit-one)
   :config
+  (setq magit-display-buffer-function 'magit-display-buffer-fullcolumn-most-v1)
   (add-hook 'git-commit-setup-hook 'evil-insert-state))
 
 (use-package evil-collection
@@ -521,7 +531,23 @@
 ;; Dumb Jump
 (use-package dumb-jump
   :config
+  (setq dumb-jump-prefer-searcher 'ag)
+  (setq dumb-jump-force-searcher 'rg)
   (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
+
+
+(defun my/counsel-projectile-rg-at-point (&optional query-message)
+  "Search for the symbol at point using counsel-projectile-rg.
+If QUERY-MESSAGE is provided, it is displayed before searching."
+  (interactive)
+  (let ((ident (thing-at-point 'symbol t)))
+    (when (or (null ident) (string-empty-p ident))
+      (setq ident (read-string "Search for: ")))
+    (setq ident (substring-no-properties ident))
+    (when query-message
+      (message query-message ident))
+    (let ((counsel-projectile-rg-initial-input ident))
+      (counsel-projectile-rg))))
 
 
 (defun my/xref-find-definitions-with-fallback ()
@@ -532,13 +558,18 @@
     (xref-find-definitions (xref-backend-identifier-at-point (xref-find-backend)))
     ;;Fallback on searching the thing-at-point with 'counsel-projectile-ripgrep'
     (error
-     (let ((ident (thing-at-point 'symbol t)))
-       (when (or (null ident) (string-empty-p ident))
-         (setq ident (read-string "Search for: ")))
-       (setq ident (substring-no-properties ident))
-       (message "Definition not found, searching project for '%s'..." ident)
-       (let ((counsel-projectile-rg-initial-input ident))
-         (counsel-projectile-rg))))))
+     (my/counsel-projectile-rg-at-point "Definition not found, searching project for '%s'..."))))
+
+
+(defun my/xref-find-references-with-fallback ()
+  "Attempt to jump to definition. If not found, fall back to project-wide search."
+  (interactive)
+  (condition-case nil
+    ;;Jump to definition with dumpjump
+    (xref-find-references (xref-backend-identifier-at-point (xref-find-backend)))
+    ;;Fallback on searching the thing-at-point with 'counsel-projectile-ripgrep'
+    (error
+     (my/counsel-projectile-rg-at-point "References not found, searching project for '%s'..."))))
 
 
 
@@ -579,6 +610,20 @@
              (overlay-put ov 'display (concat display-string "\n" (make-string indentation ?\s)))))))))
 
 (setq-default hs-set-up-overlay 'ab/hs-setup-overlay)
+
+
+
+
+
+
+;;-----------------------------------------------------------------------------
+;; Test
+(with-eval-after-load 'artist
+  (evil-make-intercept-map artist-mode-map))
+
+
+
+
 
 
 
