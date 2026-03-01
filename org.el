@@ -88,116 +88,116 @@
 ;;-----------------------------------------------------------------------------
 ;; Org Roam
 
-(use-package org-roam
-  :ensure t
-  :demand t
-  :init
-  (setq org-roam-v2-ack t)
-  (setq org-roam-dailies-directory "journal/")
-  (setq org-roam-directory "/Users/stefanobertoli/Library/Mobile Documents/com~apple~CloudDocs/OrgRoam")
-  (setq org-roam-completion-everywhere t)
-  (setq org-roam-capture-templates
-   '(
-     ("d" "default" plain
-      "%?"
-      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
-      :unnarrowed t)
-
-     ("g" "game" plain
-      (file "/Users/stefanobertoli/Library/Mobile Documents/com~apple~CloudDocs/OrgRoam/Templates/GameNoteTemplate.org")
-      :if-new (file+head "%<%Y%m%d%H%M%S>-game-${slug}.org"
-                         "#+title: ${title}\n#+filetags: game\n#+date: %U\n")
-      :unnarrowed t)
-
-     ("w" "work" plain
-      (file "/Users/stefanobertoli/Library/Mobile Documents/com~apple~CloudDocs/OrgRoam/Templates/WorkNoteTemplate.org")
-      :if-new (file+head "%<%Y%m%d%H%M%S>-work-${slug}.org"
-                         "#+title: ${title}\n#+filetags: work\n#+date: %U\n")
-      :unnarrowed t)
-
-     ("p" "personal" plain
-      (file "/Users/stefanobertoli/Library/Mobile Documents/com~apple~CloudDocs/OrgRoam/Templates/PersonalNoteTemplate.org")
-      :if-new (file+head "%<%Y%m%d%H%M%S>-personal-${slug}.org"
-                         "#+title: ${title}\n#+filetags: personal\n#+date: %U\n")
-      :unnarrowed t)
-
-     ("b" "beardedbear" plain
-      (file "/Users/stefanobertoli/Library/Mobile Documents/com~apple~CloudDocs/OrgRoam/Templates/BeardedBearNoteTemplate.org")
-      :if-new (file+head "%<%Y%m%d%H%M%S>-beardedbear-${slug}.org"
-                         "#+title: ${title}\n#+filetags: beardedbear\n#+date: %U\n")
-      :unnarrowed t)
-
-     ("t" "Task" plain
-      "%?"
-      :if-new (file+head "tasks/%<%Y%m%d%H%M%S>-${slug}.org" 
-                         "#+title: ${title}\n#+filetags: :task:\n%(my/org-roam-project-link-string)\n\n")
-      :unnarrowed t
-      :after-finalize my/org-roam-link-task-to-project)
-
-     )
-    )
-  :config
-  (org-roam-setup)
-  )
-  
-
-
-(setq org-agenda-files (list org-roam-directory))
-(setq org-agenda-span 21)
-(setq org-agenda-start-on-weekday 1) ; 1 starts the view on Monday; nil starts on today
-
-
-
-(setq org-startup-folded t)
-
-
-(setq my/org-roam-project-list
-      '(
-        ("Personal" . "D276618E-9375-474C-931D-CEF53987C9AF")
-        ("SBS"      . "E3FC5D5A-1F4F-4022-AEB2-A88F7E68D90E")
-        ))
-
-
-
-(defvar my/org-roam-last-project-id nil
-  "Stores the ID of the last selected project during capture.")
-
-(defun my/org-roam-project-link-string ()
-  "Prompt for a project and return a link string. Stores choice for the linking hook."
-  (let* ((project-name (completing-read "Link to Project: " my/org-roam-project-list))
-         (project-id (alist-get project-name my/org-roam-project-list nil nil 'equal)))
-    (setq my/org-roam-last-project-id project-id)
-    (format "[[id:%s][Back to %s Project]]" project-id project-name)))
-
-(defun my/org-roam-link-task-to-project ()
-  "Append the link to the task into the selected project note's 'Tasks' section."
-  (let (task-title task-id)
-    ;; Switch to the captured note's buffer to get its data
-    (with-current-buffer (marker-buffer org-capture-last-stored-marker)
-      (save-excursion
-        (goto-char (point-min))
-        ;; Get title from #+title keyword
-        (setq task-title (or (cadr (assoc "TITLE" (org-collect-keywords '("TITLE")))) "No Title"))
-        ;; Get ID from the first property drawer in the file
-        (setq task-id (org-id-get (point-min) t))))
-
-    (let* ((project-location (org-id-find my/org-roam-last-project-id t)))
-
-    (if (and task-id project-location)
-        (progn
-          (with-current-buffer (marker-buffer project-location)
-            (save-excursion
-              (goto-char (point-min))
-              ;; Search for * Tasks header
-              (if (re-search-forward "^\\* Tasks" nil t)
-                  (org-end-of-subtree t t)
-                (goto-char (point-max)))
-              
-              ;; Ensure newline and insert link
-              (unless (bolp) (insert "\n"))
-              (insert (format "** TODO [[id:%s][%s]]\n" task-id task-title))
-              (save-buffer)
-              (message "SUCCESS: Task link added to project."))))
-      (message "ERROR: Missing Task ID or Project File not found!")))))
+;;; (use-package org-roam
+;;;   :ensure t
+;;;   :demand t
+;;;   :init
+;;;   (setq org-roam-v2-ack t)
+;;;   (setq org-roam-dailies-directory "journal/")
+;;;   (setq org-roam-directory "/Users/stefanobertoli/Library/Mobile Documents/com~apple~CloudDocs/OrgRoam")
+;;;   (setq org-roam-completion-everywhere t)
+;;;   (setq org-roam-capture-templates
+;;;    '(
+;;;      ("d" "default" plain
+;;;       "%?"
+;;;       :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
+;;;       :unnarrowed t)
+;;; 
+;;;      ("g" "game" plain
+;;;       (file "/Users/stefanobertoli/Library/Mobile Documents/com~apple~CloudDocs/OrgRoam/Templates/GameNoteTemplate.org")
+;;;       :if-new (file+head "%<%Y%m%d%H%M%S>-game-${slug}.org"
+;;;                          "#+title: ${title}\n#+filetags: game\n#+date: %U\n")
+;;;       :unnarrowed t)
+;;; 
+;;;      ("w" "work" plain
+;;;       (file "/Users/stefanobertoli/Library/Mobile Documents/com~apple~CloudDocs/OrgRoam/Templates/WorkNoteTemplate.org")
+;;;       :if-new (file+head "%<%Y%m%d%H%M%S>-work-${slug}.org"
+;;;                          "#+title: ${title}\n#+filetags: work\n#+date: %U\n")
+;;;       :unnarrowed t)
+;;; 
+;;;      ("p" "personal" plain
+;;;       (file "/Users/stefanobertoli/Library/Mobile Documents/com~apple~CloudDocs/OrgRoam/Templates/PersonalNoteTemplate.org")
+;;;       :if-new (file+head "%<%Y%m%d%H%M%S>-personal-${slug}.org"
+;;;                          "#+title: ${title}\n#+filetags: personal\n#+date: %U\n")
+;;;       :unnarrowed t)
+;;; 
+;;;      ("b" "beardedbear" plain
+;;;       (file "/Users/stefanobertoli/Library/Mobile Documents/com~apple~CloudDocs/OrgRoam/Templates/BeardedBearNoteTemplate.org")
+;;;       :if-new (file+head "%<%Y%m%d%H%M%S>-beardedbear-${slug}.org"
+;;;                          "#+title: ${title}\n#+filetags: beardedbear\n#+date: %U\n")
+;;;       :unnarrowed t)
+;;; 
+;;;      ("t" "Task" plain
+;;;       "%?"
+;;;       :if-new (file+head "tasks/%<%Y%m%d%H%M%S>-${slug}.org" 
+;;;                          "#+title: ${title}\n#+filetags: :task:\n%(my/org-roam-project-link-string)\n\n")
+;;;       :unnarrowed t
+;;;       :after-finalize my/org-roam-link-task-to-project)
+;;; 
+;;;      )
+;;;     )
+;;;   :config
+;;;   (org-roam-setup)
+;;;   )
+;;;   
+;;; 
+;;; 
+;;; (setq org-agenda-files (list org-roam-directory))
+;;; (setq org-agenda-span 21)
+;;; (setq org-agenda-start-on-weekday 1) ; 1 starts the view on Monday; nil starts on today
+;;; 
+;;; 
+;;; 
+;;; (setq org-startup-folded t)
+;;; 
+;;; 
+;;; (setq my/org-roam-project-list
+;;;       '(
+;;;         ("Personal" . "D276618E-9375-474C-931D-CEF53987C9AF")
+;;;         ("SBS"      . "E3FC5D5A-1F4F-4022-AEB2-A88F7E68D90E")
+;;;         ))
+;;; 
+;;; 
+;;; 
+;;; (defvar my/org-roam-last-project-id nil
+;;;   "Stores the ID of the last selected project during capture.")
+;;; 
+;;; (defun my/org-roam-project-link-string ()
+;;;   "Prompt for a project and return a link string. Stores choice for the linking hook."
+;;;   (let* ((project-name (completing-read "Link to Project: " my/org-roam-project-list))
+;;;          (project-id (alist-get project-name my/org-roam-project-list nil nil 'equal)))
+;;;     (setq my/org-roam-last-project-id project-id)
+;;;     (format "[[id:%s][Back to %s Project]]" project-id project-name)))
+;;; 
+;;; (defun my/org-roam-link-task-to-project ()
+;;;   "Append the link to the task into the selected project note's 'Tasks' section."
+;;;   (let (task-title task-id)
+;;;     ;; Switch to the captured note's buffer to get its data
+;;;     (with-current-buffer (marker-buffer org-capture-last-stored-marker)
+;;;       (save-excursion
+;;;         (goto-char (point-min))
+;;;         ;; Get title from #+title keyword
+;;;         (setq task-title (or (cadr (assoc "TITLE" (org-collect-keywords '("TITLE")))) "No Title"))
+;;;         ;; Get ID from the first property drawer in the file
+;;;         (setq task-id (org-id-get (point-min) t))))
+;;; 
+;;;     (let* ((project-location (org-id-find my/org-roam-last-project-id t)))
+;;; 
+;;;     (if (and task-id project-location)
+;;;         (progn
+;;;           (with-current-buffer (marker-buffer project-location)
+;;;             (save-excursion
+;;;               (goto-char (point-min))
+;;;               ;; Search for * Tasks header
+;;;               (if (re-search-forward "^\\* Tasks" nil t)
+;;;                   (org-end-of-subtree t t)
+;;;                 (goto-char (point-max)))
+;;;               
+;;;               ;; Ensure newline and insert link
+;;;               (unless (bolp) (insert "\n"))
+;;;               (insert (format "** TODO [[id:%s][%s]]\n" task-id task-title))
+;;;               (save-buffer)
+;;;               (message "SUCCESS: Task link added to project."))))
+;;;       (message "ERROR: Missing Task ID or Project File not found!")))))
 
 (provide 'org)
