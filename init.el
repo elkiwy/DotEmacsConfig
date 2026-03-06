@@ -87,11 +87,13 @@
   ;;Enable electric-pair-mode for auto-closing brackets
   (electric-pair-mode 1)
 
-  ;;Set MacOS keybindings
-  (when (eq system-type 'darwin)
-    (setq mac-command-modifier 'super)
-    (setq mac-option-modifier nil)
-    (setq mac-control-modifier 'control))
+  ;;;;Set MacOS keybindings
+  ;;(when (eq system-type 'darwin)
+  ;;  (setq mac-command-modifier 'super)
+  ;;  (setq mac-option-modifier 'meta)
+  ;;  (setq mac-option-key-is-meta t)
+  ;;  (setq mac-command-key-is-meta nil)
+  ;;  (setq mac-control-modifier 'control))
 
   ;;Set Font
   (set-face-attribute 'default nil :font "Fira Code" :height 120)
@@ -170,6 +172,11 @@
 
 ;;Avoid to rescale the window size when zooming
 (setq frame-inhibit-implied-resize t)
+
+;;Bind CMD+s to save the current buffer on macOS (GUI mode)
+(global-set-key (kbd "s-s") 'save-buffer)
+
+
 
 
 
@@ -614,13 +621,50 @@ If QUERY-MESSAGE is provided, it is displayed before searching."
 
 
 
+;;-----------------------------------------------------------------------------
+;; Kitty Keyboard Protocol (to integrate better with Kitty Terminal)
+(use-package kkp
+  :ensure t
+  :config
+  (global-kkp-mode +1))
+
+
+;; Kitty sends KKP escape sequences for CMD (super) keys even before full KKP
+;; negotiation. Explicitly decode them in input-decode-map so they always work.
+;; KKP encodes super modifier as 8+1=9, so CMD+s = \e[115;9u (115='s').
+;; When KKP IS fully active its \e[1 prefix handler intercepts and also
+;; produces s-s — either way the global-set-key below handles it.
+(defun my/kitty-cmd-keys-setup ()
+  (define-key input-decode-map "\e[115;9u" [?\s-s])   ; CMD+s
+  (define-key input-decode-map "\e[99;9u"  [?\s-c])   ; CMD+c
+  (define-key input-decode-map "\e[118;9u" [?\s-v])   ; CMD+v
+  (define-key input-decode-map "\e[120;9u" [?\s-x])   ; CMD+x
+  (define-key input-decode-map "\e[122;9u" [?\s-z]))  ; CMD+z
+
+(when (not (display-graphic-p))
+  (my/kitty-cmd-keys-setup))
+(add-hook 'tty-setup-hook #'my/kitty-cmd-keys-setup)
+
+(global-set-key (kbd "s-s") 'save-buffer)
+(global-set-key (kbd "s-c") 'kill-ring-save)
+(global-set-key (kbd "s-v") 'yank)
+(global-set-key (kbd "s-x") 'kill-region)
+
+;; Sync kill ring to macOS clipboard in TUI mode via pbcopy
+(unless (display-graphic-p)
+  (defun my/pbcopy (text &optional _push)
+    (let ((process-connection-type nil))
+      (let ((proc (start-process "pbcopy" nil "pbcopy")))
+        (process-send-string proc text)
+        (process-send-eof proc))))
+  (setq interprogram-cut-function #'my/pbcopy))
+
 
 
 ;;-----------------------------------------------------------------------------
 ;; Test
 (with-eval-after-load 'artist
   (evil-make-intercept-map artist-mode-map))
-
 
 
 
