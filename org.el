@@ -2,9 +2,7 @@
 
 ;;-----------------------------------------------------------------------------
 ;; Org Mode
-(use-package org
-  :hook (org-mode . org-indent-mode)
-  :config
+(with-eval-after-load 'org
   (setq org-hide-leading-stars t) ; Hides all but one star for a cleaner look
   (setq org-adapt-indentation nil) ; Ensures Org doesn't add real spaces
 
@@ -16,7 +14,7 @@
   (setq org-tag-alist
         '(
           (:startgroup) ("easy" . ?e) ("medium" . ?m) ("hard" . ?h) (:endgroup)
-          ("beardedbear" . ?b) ("casa" . ?c) ("work" . ?w) ("other" . ?o) 
+          ("beardedbear" . ?b) ("casa" . ?c) ("work" . ?w) ("other" . ?o)
          ))
   (setq org-tag-faces
         '(("easy"         . (:foreground "#98be65" :weight bold))
@@ -46,11 +44,18 @@
           (?B . (:foreground "#ECBE7B" :weight bold))
           (?C . (:foreground "#BCCE8B" :weight bold)))))
 
+(use-package org
+  :hook (org-mode . org-indent-mode))
+
 
 (use-package evil-org
   :straight t
   :after org
   :hook (org-mode . evil-org-mode)
+  :init
+  ;; Exclude 'calendar' from the default theme to avoid the
+  ;; org-read-date-minibuffer-local-map void variable error at startup
+  (setq evil-org-key-theme '(navigation insert shift todo heading))
   :config
   ;; This ensures >> and << work for headings and lists
   (require 'evil-org-agenda)
@@ -200,4 +205,4 @@
 ;;;               (message "SUCCESS: Task link added to project."))))
 ;;;       (message "ERROR: Missing Task ID or Project File not found!")))))
 
-(provide 'org)
+(provide 'my-org-config)
