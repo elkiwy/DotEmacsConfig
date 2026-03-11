@@ -311,8 +311,11 @@
   :config
   (general-evil-setup)
 
+  (defvar ab/last-project-command nil
+    "The last command run via `ab/run-project-command'.")
+
   (defun ab/run-project-command ()
-    "Run a command from .emacs_commands in the project root."
+    "Run a command from .emacs_commands in the project root using vterm."
     (interactive)
     (let* ((root (projectile-project-root))
            (commands-file (expand-file-name ".emacs_commands" root)))
@@ -320,10 +323,15 @@
           (let* ((commands (with-temp-buffer
                              (insert-file-contents commands-file)
                              (split-string (buffer-string) "\n" t)))
-                 (command (completing-read "Run command: " commands)))
+                 (command (completing-read "Run command: " commands nil nil nil nil ab/last-project-command)))
             (when (and command (not (string-empty-p command)))
+              (setq ab/last-project-command command)
               (let ((default-directory root))
-                (pop-to-buffer (compile command)))))
+                (let ((vterm-buffer (vterm)))
+                  (with-current-buffer vterm-buffer
+                    (vterm-send-string command)
+                    (vterm-send-return))
+                  (pop-to-buffer vterm-buffer)))))
         (message "No .emacs_commands file found in project root (%s)." root))))
 
 
