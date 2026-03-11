@@ -143,6 +143,19 @@
 
 
 
+;;-----------------------------------------------------------------------------
+;; Auto-Revert Buffers
+(use-package autorevert
+  :straight nil
+  :demand
+  :config
+  (global-auto-revert-mode 1)
+  ;; Don't ask for confirmation when reverting
+  (setq auto-revert-verbose nil)
+  ;; Also revert dired buffers
+  (setq global-auto-revert-non-file-buffers t))
+
+
 
 
 
